@@ -1227,7 +1227,8 @@ def Fight(boss):
             player_stats["health"] = player_stats['max_health']
             player_stats['nerves'] = player_stats['max_nerves']
 
-            added_score = round((boss['score'] * (1.0 - ((0.01 * turn) - (0.2 * (player_stats['health']/player_stats['max_health']))))))
+            added_score = boss['score'] - (5 * (turn - 10))
+            added_score -= 20 * len(saved_inventory)
 
             player_stats['score'] += added_score
 
