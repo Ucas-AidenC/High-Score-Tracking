@@ -1311,9 +1311,9 @@ while True:
     print(f'You are at {locations[player_stats['position']]}')
     
     if player_stats['pages'] != 4:
-        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings']
+        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Exit']
     else:
-        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Fight Final Boss']
+        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Exit', 'Fight Final Boss']
 
     match ShowOptions(menu_options, 'What would you like to do? ', False):
         case 0:
@@ -1348,6 +1348,8 @@ while True:
                 else:
                     print_all_dialogue = True
         case 5:
+            exit()
+        case 6:
             want_final_fight = True
             continue
     
