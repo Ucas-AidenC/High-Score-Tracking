@@ -2,9 +2,9 @@ import random
 import math
 
 # Debug Values. Do not apply to game.
-skip_intro = True
+skip_intro = False
 debug_attacks = False
-print_all_dialogue = True
+print_all_dialogue = False
 
 game_title_screen = '''
 -~-~-~-~-~-~Quest for the Country!-~-~-~-~-~-~
@@ -116,6 +116,7 @@ player_stats = {
     'position': 0,
     'score': 0
 }
+
 player_attacks = [
     {
         "name": "Uncouth Declaration",
@@ -580,11 +581,12 @@ bosses = [
         "min_nerves": 25,
         'def_health': 50,
         'def_nerves': 100,
-
+        
         "victory_item": items[0],
+        'score': 100,
+
         "location": 0,
         'index': 0,
-        'score': 100,
 
         "intro": ["...", 'Wait a second...', "You don't know how to fight, do you?", "Well, these guys are not going to willing give up their pages so let's learn.",
         "I'm sure you're already familiar with how health works, but people often underestimate how important it is to keep a cool head.", 
@@ -623,11 +625,12 @@ bosses = [
         "min_nerves": 25,
         'def_health': 80,
         'def_nerves': 100,
-        
+
         "victory_item": items[1],
+        'score': 500,
+
         "location": 1,
         'index': 1,
-        'score': 300,
 
         "intro": ["As you traverse the spookyland, you can feel chills go down your spine", 'As you go, you see a variety of ghouls, ghosts, zombies, and skeletons living their lives.'
                   "You've always heard tales about the scariness of spookyland but you never believed it",
@@ -664,9 +667,10 @@ bosses = [
         'def_nerves': 80,
 
         "victory_item": items[4],
+        'score': 300,
+
         "location": 6,
         'index': 2,
-        'score': 200,
 
         "intro": ['Welcome to Town City, your home town.', "Why isn't it great to be home!", 'Air: Polluted', "Tap Water: Don't Drink", 'Crime: Of Course', 'Labor Laws: Ignored', "Truly lovely isn't it?",
         "Although, given how big this city is, if there's a page here, there's no way that we could find it anytime soon.", "Well then, let's go searching.", 
@@ -700,9 +704,10 @@ bosses = [
         'def_nerves': 100,
 
         "victory_item": items[8],
+        'score': 500,
+
         "location": 4,
         'index': 3,
-        'score': 400,
 
         "intro": ['H-Hey,', 'so,', 'maybe it was a bad idea to come to the north pole...', 'in nothing but a polo and jeans...', 'in the winter.', 
         "E-even I-I'm cold, and I don't have any p-physical feeling.", 'Anyway, you come upon a factory in the middle of no-where.', "Santa's Workshop.",
@@ -730,6 +735,7 @@ bosses = [
     },
     {
         "name": "Zeep Vorp",
+
         "health": 120,
         "nerves": 130,
         "max_health": 120,
@@ -738,10 +744,10 @@ bosses = [
         'def_health': 100,
         'def_nerves': 120,
 
+        'score': 800,
+
         "location": 4,
         'index': 4,
-        'score': 500,
-
         "intro": ['4 pages down, 1 more to go.', 'Where could it be though?', 'We looked almost everywhere!', 'Maybe we have to double check British Texas?',
         'We did get very busy with that horde back there.', '...', 'Oh...', 'oh my!', 'You hear a deafening humming noise behind you.', 
         'You turn around and you see large flying mech piloted by none other than...', 'Zeep Vorp!', "Oh, thank goodness, he's here to help!", 'BLAM!', 'POW!', 'ZOOM!',
@@ -764,7 +770,9 @@ bosses = [
 ]
 
 def Dialogue(dialogue):
+
     i = 0
+
     if not print_all_dialogue:
         for line in dialogue:
             i += 1
@@ -782,7 +790,7 @@ def ShowOptions(choices, selection_prompt, display_only):
     while not input_taken:
         for choice in choices:
 
-            # Checks if the choice has an health_effesct because only items and attacks have them, so this is to check if the choice is an attack or item
+            # Checks if the choice has an health_effect because only items and attacks have them, so this is to check if the choice is an attack or item
             if type(choice) is dict:
 
                 print(f'{choices.index(choice)}. {choice['name']}')
@@ -868,7 +876,7 @@ def RollNerveEffect(nerves):
         if rolled_number > (nerves * 1.5):
             return 0
         else:
-            return 0.25
+            return 0.5
     else:
         if rolled_number < (nerves * 0.1):
             return 1.5
@@ -1022,59 +1030,25 @@ def TakeAction(action, nerves_value, from_player, boss):
     if boss['health'] > boss['max_health']: boss['health'] = boss['max_health']
        
     if boss['nerves'] > boss['max_nerves']: boss['nerves'] = boss['max_nerves']
-    elif boss['nerves'] < boss['min_nerves']: boss['nerves'] = boss["min_nerves"]
+    elif boss['nerves'] < boss['min_nerves']: boss['nerves'] = boss["min_nerves"] 
 
-def GameOver(boss, saved_inventory):
-
+def GameOver(boss):
     player_stats["health"] = player_stats['max_health']
     player_stats['nerves'] = player_stats['max_nerves']
-
     boss['health'] = boss['def_health']
     boss['nerves'] = boss['def_nerves']
-
     Dialogue(['-!-!-!-GAME OVER-!-!-!-'] + boss['boss_victory_text'] + ["Let's run that back..."])
 
-    player_stats['position'] = 0
-
-    for saved_item in saved_inventory:
-        inventory.append(saved_item)            
-
-# Give Player Reward Item
-def GiveItem(boss):
+def GiveReward(boss):         
     player_stats['pages'] += 1
-
     Dialogue([f'You now have {player_stats['pages']}/5 pages!'])
                 
+    # Give Player Reward Item
     inventory.append(boss['victory_item'])
     input('You have a new item! (1/1)')
     input(ShowOptions([boss['victory_item']], 'Test', display_only=True))
     rewards_recieved = True
 
-# Have player choose what stat to level up
-def LevelUp():
-    
-    match ShowOptions([f'Strength: {player_stats["strength"]}', f'Bravery: {player_stats['bravery']}', f'Durability: {player_stats['durability']}', f'Recovery: {player_stats['recovery']}'], 'Which stat do you wish to level up? ', False):
-        case 0:
-
-            player_stats['strength'] += 1
-            player_stats['attack_potency'] += (player_stats["strength"]) * 0.15
-            Dialogue([f'Your strength is now at Level {player_stats['strength']}!'])
-        case 1:
-            player_stats['bravery'] += 1
-            player_stats['max_nerves'] += (player_stats["bravery"]) * 10
-            Dialogue([f'Your bravery is now at Level {player_stats['bravery']}!'])
-        case 2:
-
-            player_stats['durability'] += 1
-            player_stats['max_health'] += (player_stats['durability']) * 15
-            Dialogue([f'Your durability is now at Level {player_stats['durability']}!'])
-        case 3:
-            player_stats['recovery'] += 1
-            player_stats['recovery_potency'] += (player_stats["recovery"]) * 0.15
-            Dialogue([f'Your recovery stat is now at Level {player_stats['recovery']}!'])
-        case _:
-            print('Oops! Invalid Input!')
-            LevelUp()
 
 def Fight(boss):
     turn = -1
@@ -1090,12 +1064,10 @@ def Fight(boss):
     # This resets the boss's health after a game over and makes sure that the boss's health is properly scaled with player level
     boss['health'] = boss['def_health'] + (10 * player_stats['level'])
     boss['nerves'] = boss['def_nerves']
-
     # This ensures that the boss's max health doesn't infinitely stack
     if not boss['encountered'] or boss['level_last_encountered'] != player_stats['level']:
         boss['max_health'] += 10 * player_stats['level']
         boss['level_last_encountered'] = player_stats['level']
-
     # This ensures that the Metaphor for Capitalism doesn't start at max health
     if boss['index'] != 2:
         boss['health'] = boss['max_health']
@@ -1185,14 +1157,21 @@ def Fight(boss):
                 turn += 1
         # Game Over Sequence
         elif player_stats['health'] <= 0:
+           
+            GameOver(boss)
+            
+            # If the player is on the tutorial boss, automatically restart the boss fight
+            if player_stats['position'] == 0:
+                turn = -1
+                continue
 
-            GameOver(boss, saved_inventory)
+            player_stats['position'] = 0
+
+            # Restock inventory with all lost items
+            for saved_item in saved_inventory:
+                inventory.append(saved_item)
 
             fight_finished = True
-
-            if boss['index'] == 0:
-                Fight(bosses[0])
-
         # Victory Sequence
         elif boss['health'] <= 0 and boss['index'] != 4:
 
@@ -1201,11 +1180,30 @@ def Fight(boss):
                 monologue_complete = True
 
             if rewards_recieved == False:
-                GiveItem(boss)
+                GiveReward(boss)
                 rewards_recieved = True
-
+                
             if not stat_boosted:
-                LevelUp()
+                # Have player choose what stat to level up
+                match ShowOptions([f'Strength: {player_stats["strength"]}', f'Bravery: {player_stats['bravery']}', f'Durability: {player_stats['durability']}', f'Recovery: {player_stats['recovery']}'], 'Which stat do you wish to level up? ', False):
+                    case -1:
+                        continue
+                    case 0:
+                        player_stats['strength'] += 1
+                        player_stats['attack_potency'] += (player_stats["strength"]) * 0.15
+                        Dialogue([f'Your strength is now at Level {player_stats['strength']}!'])
+                    case 2:
+                        player_stats['durability'] += 1
+                        player_stats['max_health'] += (player_stats['durability']) * 15
+                        Dialogue([f'Your durability is now at Level {player_stats['durability']}!'])
+                    case 1:
+                        player_stats['bravery'] += 1
+                        player_stats['max_nerves'] += (player_stats["bravery"]) * 10
+                        Dialogue([f'Your bravery is now at Level {player_stats['bravery']}!'])
+                    case 3:
+                        player_stats['recovery'] += 1
+                        player_stats['recovery_potency'] += (player_stats["recovery"]) * 0.15
+                        Dialogue([f'Your recovery stat is now at Level {player_stats['recovery']}!'])
                 stat_boosted = True
             
             ShowOptions([reward_attacks[boss['index']]], 'Yippee', True)
@@ -1224,20 +1222,28 @@ def Fight(boss):
                     continue
 
             player_stats['level'] += 1
-
-            player_stats['score'] += round(boss['score'] * (10/turn))
-            input(f'User gained +{round(boss['score'] * (10/turn))} score')
             
             # Reset Player health and nerves and mark boss as defeated
             player_stats["health"] = player_stats['max_health']
             player_stats['nerves'] = player_stats['max_nerves']
 
+            added_score = round((boss['score'] * (1.0 - ((0.01 * turn) - (0.2 * (player_stats['health']/player_stats['max_health']))))))
+
+            player_stats['score'] += added_score
+
+            input(f'+{added_score} score!')
 
             boss['is_defeated'] = True
             fight_finished = True
 
         elif boss['health'] <= 0 and boss['index'] == 4:
+            added_score = round((boss['score'] * (1.0 - ((0.01 * turn) - (0.2 * (player_stats['health']/player_stats['max_health']))))))
+
+            player_stats['score'] += added_score
+
+            input(f'+{added_score} score!')
             Dialogue(boss['boss_defeat_text'])
+
             boss['is_defeated'] = True
             fight_finished = True
 
@@ -1277,10 +1283,11 @@ while True:
                               'You turn around, confused to see the elf that captured you earlier.', '"The fat man could not attend so I am here to represent him"', '"He says sorry. It was not in the spirit of Christmas to try to hold the country hostage."',
                               '"Thank ya. It seems like after yer fight with him, he has been a lot kinder."', 'You nod and then remember the hat you took from him', 'You shrug and toss it to her', '"Oh! Ya do not have to do this"',
                               '"The hat called to ya!"', 'You shrug.', '"Wow... thank ya..."', '"Raaaah. Honored one, is that you?"', "Suddenly, Mr. Skellybones interjects.", '"I have come to thank you, on behalf of the monsters of Spookyland"',
-                              '"We would not be thriving without your advocacy."', '"HELLO! I_THANK_YOU = TRUE. RATINGS = 10000!" says Super-Robo-Caeser.', '"Hello, dear intern, the Royal Family of North Dakota wishes to congratulate you on this incredible achievement." says a representative from North Dakota',
+                              '"We would not be thriving without your advocacy."', '"HELLO! I_THANK_YOU = TRUE. RATINGS = 10000!" says Super-Robo-Caeser.', '"Hello, dear intern, the Royal Family of North Dakota wishes to congratulate you on this incredible achievement.", says a representative from North Dakota', 
                               'Hey, I thank you too.', "You've probably showed me some the greates excitement a voice in someone's head can ever have.", 'Thank you.'
                               'And so, the fireworks shine brighter than ever,', 'and even better,', 'after the show you were bestowed the greatest honor an unpaid intern can get...', 'a wage of $8 an hour.', 
                               'The End.'])
+                    input(f'Final Score: {player_stats['score']}')
                     break
                 else:
                     continue
@@ -1304,9 +1311,9 @@ while True:
     print(f'You are at {locations[player_stats['position']]}')
     
     if player_stats['pages'] != 4:
-        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Exit']
+        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings']
     else:
-        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Exit', 'Fight Final Boss']
+        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Fight Final Boss']
 
     match ShowOptions(menu_options, 'What would you like to do? ', False):
         case 0:
@@ -1322,6 +1329,7 @@ while True:
             print(f"Health: {player_stats["health"]}/{player_stats["max_health"]} \nNerves: {player_stats["nerves"]}/{player_stats["max_nerves"]} \nAttack Potency: {player_stats["attack_potency"]}x \nRecovery Potency: {player_stats['recovery_potency']}")
             print(f"Minimum Nerves: {player_stats['min_nerves']} \nStrength: {player_stats["strength"]} \nBravery: {player_stats["bravery"]} \nDurability: {player_stats['durability']} \nRecovery: {player_stats['recovery']}")
             print(f'Pages: {player_stats['pages']}/5')
+            print(f'Level: {player_stats['level']}')
             print(f'Score: {player_stats['score']}')
             input('Type anything to go back. ')
         case 2:
@@ -1340,8 +1348,6 @@ while True:
                 else:
                     print_all_dialogue = True
         case 5:
-            exit()
-        case 6:
             want_final_fight = True
             continue
     
