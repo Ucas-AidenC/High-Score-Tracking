@@ -1,6 +1,11 @@
 import random
 import math
 
+# Information for team: 
+# The code may seem large but that's purely because most of it is dialogue, as you can see by how most of the code is orange on the right side.
+# The score value is on in the player_stats dictionary on line 122.
+# The way score is added is shown in Fight function on lines 1296 and 1297
+
 # Debug Values. Do not apply to game.
 skip_intro = False
 debug_attacks = False
@@ -869,6 +874,7 @@ def Move(current_local, desired_local):
         print(f"Sorry pal, you can't move to {locations[desired_local]} from {locations[current_local]} \nYou did not move.")
         return current_local
 
+# Rolls effectivness of attack depending on nerves.
 def RollNerveEffect(nerves):
     rolled_number = random.randint(1,100)
 
@@ -884,6 +890,8 @@ def RollNerveEffect(nerves):
             return 1  
 
 def TakeAction(action, nerves_value, from_player, boss):
+
+    # Rolls for effectiveness
     nerve_multipler = RollNerveEffect(nerves_value)
     effectiveness = ['I do not know the effectiveness of this action']
     user_text = [f'I do not know who did this action']
@@ -895,6 +903,7 @@ def TakeAction(action, nerves_value, from_player, boss):
 
     health_effect = 0
     nerves_effect = 0
+
 
     if not from_player or not action['is_item']: 
         match nerve_multipler:
@@ -919,9 +928,10 @@ def TakeAction(action, nerves_value, from_player, boss):
     # Verifies whether the attack came from the player or boss
     if from_player and not action['is_item']:
 
-
+        # Applies effects to player
         if action['to_player']:
 
+            # Modifies effectiveness based off of nerve_multiplier and player_stats
             health_effect = math.floor(action['health_effect'] * nerve_multipler * player_stats['recovery_potency'])
             nerves_effect = math.floor(action['nerves_effect'] * nerve_multipler * player_stats['recovery_potency'])
 
@@ -937,8 +947,11 @@ def TakeAction(action, nerves_value, from_player, boss):
                 print(f'You lost {nerves_effect} nerves.')
             else:
                 print(f'You gained {nerves_effect} nerves.')
+
+        # Applies effects to enemy
         else:
 
+            # Modifies effectiveness based off of nerve_multiplier and player_stats
             health_effect = math.floor(action['health_effect'] * nerve_multipler * player_stats['attack_potency'])
             nerves_effect = math.floor(action['nerves_effect'] * nerve_multipler * player_stats['attack_potency'])
 
@@ -955,6 +968,7 @@ def TakeAction(action, nerves_value, from_player, boss):
             else:
                 print(f'Your opponent gained {nerves_effect} nerves from your attack.')
 
+    # If player is using an item
     elif from_player and action['is_item']:
 
         health_effect = action['health_effect']
@@ -975,6 +989,7 @@ def TakeAction(action, nerves_value, from_player, boss):
                 print(f'You lost {nerves_effect} nerves.')
             else:
                 print(f'You gained {nerves_effect} nerves.')
+
         else:
             boss['health'] += health_effect
             boss['nerves'] += nerves_effect
@@ -990,6 +1005,7 @@ def TakeAction(action, nerves_value, from_player, boss):
                 print(f'Your opponent gained {nerves_effect} nerves from your attack.')
 
         inventory.pop(inventory.index(action))
+
     # If the action was not from a player, it will be handled as an item and use the boss's pool of attacks
     else:
         health_effect = math.floor(action['health_effect'] * (nerve_multipler + (0.05 * player_stats['level'])))
@@ -1032,14 +1048,22 @@ def TakeAction(action, nerves_value, from_player, boss):
     if boss['nerves'] > boss['max_nerves']: boss['nerves'] = boss['max_nerves']
     elif boss['nerves'] < boss['min_nerves']: boss['nerves'] = boss["min_nerves"] 
 
+# Game Over Sequence
 def GameOver(boss):
+
+    # Resets player and boss stats
     player_stats["health"] = player_stats['max_health']
     player_stats['nerves'] = player_stats['max_nerves']
+
     boss['health'] = boss['def_health']
     boss['nerves'] = boss['def_nerves']
+
     Dialogue(['-!-!-!-GAME OVER-!-!-!-'] + boss['boss_victory_text'] + ["Let's run that back..."])
 
+# Function to reward player with page and item after beating a boss
 def GiveReward(boss):         
+
+    # Gives Player Page
     player_stats['pages'] += 1
     Dialogue([f'You now have {player_stats['pages']}/5 pages!'])
                 
@@ -1049,7 +1073,7 @@ def GiveReward(boss):
     input(ShowOptions([boss['victory_item']], 'Test', display_only=True))
     rewards_recieved = True
 
-
+# Function that manages battles
 def Fight(boss):
     turn = -1
     fight_finished = False
@@ -1075,14 +1099,21 @@ def Fight(boss):
     while not fight_finished:
 
         if boss['health'] > 0 and player_stats['health'] > 0:
+
+            # Boss Intro Sequence
             if turn == -1:
                 if not boss['encountered']:
                     Dialogue(boss["intro"])
                 turn += 1
                 boss['encountered'] = True
+
+            # Player Turn
             elif turn % 2 == 0:
+
                 input(f"-+-+-+-+-Your Turn-+-+-+-+-")
                 print(f'-~-~-~-~-~{boss["name"]}-~-~-~-~-~ ')
+
+                # Gets whether player wants
                 try:
                     action = ShowOptions(['Check Stats', 'Select Item', 'Select Attack'], 'What is your choice? ', False)
 
@@ -1093,6 +1124,8 @@ def Fight(boss):
                     continue
 
                 match action:
+
+                    # Shows Stats
                     case 0:
                         print(f"-=-=-=-Your Stats-=-=-=-")
                         print(f"Health: {player_stats["health"]}/{player_stats["max_health"]} \nNerves: {player_stats["nerves"]}/{player_stats["max_nerves"]} \nAttack Potency: {player_stats["attack_potency"]}x \nRecovery Potency: {player_stats['recovery_potency']}")
@@ -1101,33 +1134,46 @@ def Fight(boss):
                         print(f"Health: {boss['health']}/{boss['max_health']} \nNerves: {boss['nerves']}/{boss['max_nerves']} \nMinimum Nerves: {boss['min_nerves']}")
                         input("Enter Anything to go back to main battle menu: ")
                         continue
+
+                    # Opens Inventory
                     case 1:
+
+                        # Tell player if inventory is closed, then goes back to menu
                         if not inventory:
                             input("Welp, there's nothing here, back to the main battle menu. ")
                             continue
+
                         player_action = ShowOptions(inventory, "Which item do you wish to use (Enter Number)? ", False)
 
                         if player_action < 0:
                             continue
+                        
 
                         if inventory[player_action]['name'] == 'Boat':
                             Dialogue('Um... what were you thinking their?', "It's a boat.", 'What possible use could a boat have in combat.')
                             continue
+
+                        # Saves item in saved_inventory then uses items
                         saved_inventory.append(inventory[player_action])
-                        TakeAction(inventory[player_action], player_stats['nerves'], True, boss)               
+                        TakeAction(inventory[player_action], player_stats['nerves'], True, boss)       
+
+                    # Attacks Menu
                     case 2:        
                         player_action = ShowOptions(player_attacks, "Which attack do you wish to use (Enter Number)? ", False)
 
                         if player_action < 0:
                             continue
-
+                            
                         TakeAction(player_attacks[player_action], player_stats['nerves'], True, boss)        
                   
                 turn += 1  
                 if boss['health'] > 0:
                     input(f"-+-+-+-+-{boss['name']}'s Turn-+-+-+-+-")
-            else:      
 
+            # Boss Turn
+            else:      
+                
+                # Randomly selects boss_attacks
                 boss_attack = boss_attacks[boss['index']][random.randint(0, len(boss_attacks[boss['index']]) - 1)]
 
                 rerolls = 0
@@ -1172,6 +1218,7 @@ def Fight(boss):
                 inventory.append(saved_item)
 
             fight_finished = True
+
         # Victory Sequence
         elif boss['health'] <= 0 and boss['index'] != 4:
 
@@ -1186,20 +1233,30 @@ def Fight(boss):
             if not stat_boosted:
                 # Have player choose what stat to level up
                 match ShowOptions([f'Strength: {player_stats["strength"]}', f'Bravery: {player_stats['bravery']}', f'Durability: {player_stats['durability']}', f'Recovery: {player_stats['recovery']}'], 'Which stat do you wish to level up? ', False):
+
+                    # Invalid Option
                     case -1:
                         continue
+
+                    # Boost Strength
                     case 0:
                         player_stats['strength'] += 1
                         player_stats['attack_potency'] += (player_stats["strength"]) * 0.15
                         Dialogue([f'Your strength is now at Level {player_stats['strength']}!'])
+
+                    # Boost Durability
                     case 2:
                         player_stats['durability'] += 1
                         player_stats['max_health'] += (player_stats['durability']) * 15
                         Dialogue([f'Your durability is now at Level {player_stats['durability']}!'])
+
+                    # Boost Bravery
                     case 1:
                         player_stats['bravery'] += 1
                         player_stats['max_nerves'] += (player_stats["bravery"]) * 10
                         Dialogue([f'Your bravery is now at Level {player_stats['bravery']}!'])
+
+                    # Boost Recovery
                     case 3:
                         player_stats['recovery'] += 1
                         player_stats['recovery_potency'] += (player_stats["recovery"]) * 0.15
@@ -1208,16 +1265,23 @@ def Fight(boss):
             
             ShowOptions([reward_attacks[boss['index']]], 'Yippee', True)
 
+            # If the boss is the Voice In Your Head, automatically give reward_attack
             if boss['name'] == "The Voice In Your Head":
                 Dialogue([f'You have learned Pep Talk. Congratualations!'])
                 player_attacks.append(reward_attacks[0])
+
+            # Gives player the option of whether or not to take a reward item
             else:
+
                 replace = ShowOptions(['Yes', 'No'], 'Would you like to replace any of your attacks with this one? ', False)
+
                 if replace == 0:                
                     player_attacks[ShowOptions(player_attacks, 'Which attack would you like to replace ? ', False)] = reward_attacks[boss['index']]
                     Dialogue([f'You have learned {reward_attacks[boss['index']]['name']}!'])
+
                 elif replace == 1:
                     Dialogue([f'You have decided not to learn {reward_attacks[boss['index']]['name']}.'])
+
                 else:
                     continue
 
@@ -1227,6 +1291,7 @@ def Fight(boss):
             player_stats["health"] = player_stats['max_health']
             player_stats['nerves'] = player_stats['max_nerves']
 
+            # Adds Score
             added_score = boss['score'] - (5 * (turn - 10))
             added_score -= 20 * len(saved_inventory)
 
@@ -1237,6 +1302,7 @@ def Fight(boss):
             boss['is_defeated'] = True
             fight_finished = True
 
+        # If the final boss is defeated
         elif boss['health'] <= 0 and boss['index'] == 4:
             added_score = round((boss['score'] * (1.0 - ((0.01 * turn) - (0.2 * (player_stats['health']/player_stats['max_health']))))))
 
@@ -1248,6 +1314,7 @@ def Fight(boss):
             boss['is_defeated'] = True
             fight_finished = True
 
+# Intro Sequence
 if not skip_intro:
 
     input(game_title_screen)
@@ -1271,24 +1338,34 @@ want_final_fight = True
 
 while True:
 
+    # If player wants final fight
     if player_stats['pages'] == 4 and want_final_fight:
         match ShowOptions(['Yes', 'No'], 'You are approaching the final boss. It is HIGHLY recommended to get ALL items availible. Do you wish to continue and fight the final boss?', False):
+
+            # Player does not want to fight final boss
             case 1:
                 want_final_fight = False
                 continue
+            # Player does want to fight final boss
             case 0:
+
                 Fight(bosses[4])
+
+                # Ending Sequence
                 if bosses[4]['is_defeated']:
+
                     Dialogue(['And so, your journey concluded.', 'After returning the constitution to your white house, a grand festival was hosted in your honor.', 'Everyone from all walks of life, from British Texas to the North Pole, attended in high spirits',
                               'As the fireworks show begins, you sit upon a far off hilltop and watch.', 'The fireworks are mesmorizing and the amazed crowds bring a smile to your face.', '"Hey!"', 
                               'You turn around, confused to see the elf that captured you earlier.', '"The fat man could not attend so I am here to represent him"', '"He says sorry. It was not in the spirit of Christmas to try to hold the country hostage."',
                               '"Thank ya. It seems like after yer fight with him, he has been a lot kinder."', 'You nod and then remember the hat you took from him', 'You shrug and toss it to her', '"Oh! Ya do not have to do this"',
-                              '"The hat called to ya!"', 'You shrug.', '"Wow... thank ya..."', '"Raaaah. Honored one, is that you?"', "Suddenly, Mr. Skellybones interjects.", '"I have come to thank you, on behalf of the monsters of Spookyland"',
+                              '"The hat called to ya!"', 'You shrug.', '"Wow... thank ya..."',  "Suddenly, Mr. Skellybones interjects.", '"Raaaah. Honored one, is that you?"', '"I have come to thank you, on behalf of the monsters of Spookyland"',
                               '"We would not be thriving without your advocacy."', '"HELLO! I_THANK_YOU = TRUE. RATINGS = 10000!" says Super-Robo-Caeser.', '"Hello, dear intern, the Royal Family of North Dakota wishes to congratulate you on this incredible achievement.", says a representative from North Dakota', 
                               'Hey, I thank you too.', "You've probably showed me some the greates excitement a voice in someone's head can ever have.", 'Thank you.'
                               'And so, the fireworks shine brighter than ever,', 'and even better,', 'after the show you were bestowed the greatest honor an unpaid intern can get...', 'a wage of $8 an hour.', 
-                              'The End.'])
+                              'This is the End of the quest for the country.'])
+                    
                     input(f'Final Score: {player_stats['score']}')
+                    input(f'Quest for the Country designed, written, and developed by Darius Vaiaoga')
                     break
                 else:
                     continue
@@ -1317,6 +1394,8 @@ while True:
         menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Exit', 'Fight Final Boss']
 
     match ShowOptions(menu_options, 'What would you like to do? ', False):
+
+        # Move
         case 0:
             try:
                 print(f"Since you're currently at {locations[player_stats['position']]}, you can go to: ")
@@ -1325,6 +1404,8 @@ while True:
                 player_stats['position'] = Move(player_stats['position'], int(input("Where would you like to go? ")))
             except:
                 print("Oops! Seems like you entered something incorrectly. Let's try that again")
+
+        # Show Stats
         case 1:
             print(f"-=-=-=-Your Stats-=-=-=-")
             print(f"Health: {player_stats["health"]}/{player_stats["max_health"]} \nNerves: {player_stats["nerves"]}/{player_stats["max_nerves"]} \nAttack Potency: {player_stats["attack_potency"]}x \nRecovery Potency: {player_stats['recovery_potency']}")
@@ -1333,23 +1414,35 @@ while True:
             print(f'Level: {player_stats['level']}')
             print(f'Score: {player_stats['score']}')
             input('Type anything to go back. ')
+
+        # Show Inventory
         case 2:
-            ShowOptions(inventory, "Which item do you wish to use (Enter Number)? ", True)
+            ShowOptions(inventory, "Here are your items. ", True)
             input('Enter anything to go back. ')
+
+        # Show Player Attacks
         case 3:
             ShowOptions(player_attacks, '', True)
             input('Enter anything to go back. ')
+
+        # Enters Settings
         case 4:
+
             print(f'0. Instant Dialogue [{print_all_dialogue}]')
             print(f'    Prints all dialogue at once instead of writing individual lines upon player input. Good if you are short on time.')
 
+            # If the player chooses, they can toggle whether or not dialogue is paced or not
             if input('What setting would you like to modify (If none, enter anything but the numbers)? ') == '0':
                 if print_all_dialogue:
                     print_all_dialogue = False
                 else:
                     print_all_dialogue = True
+
+        # Exit
         case 5:
             exit()
+
+        # Enter Final Boss (Choice only avaliable when player has 4/5 pages)
         case 6:
             want_final_fight = True
             continue
