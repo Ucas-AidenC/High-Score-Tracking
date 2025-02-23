@@ -1,0 +1,63 @@
+
+SET profiles to be an empty list
+
+DEFINE FUNCTION main_menu:
+
+    WHILE main_menu_exited equals false:
+
+        PRINT prompt asking whether user wants to go to games, change their profile, or exist
+
+        IF user wants to go to games:
+            main_menu_exited equals true
+            GO TO select game menu (Not my part)
+
+        ELSE IF user wants to change profile:
+            main_menu_exited equals false
+            INVOKE login
+
+        ELSE IF user wants to exit:
+            main_menu_exited equals false
+
+        ELSE:
+            PRINT message telling user they chose an invalid option
+
+DEFINE FUNCTION login:
+
+    FOR profile in CVS file profiles_file:
+
+        IF profile is not in profiles:
+            ADD profile to profiles
+
+    WHILE logged_in equals false:
+
+        IF there is a profile in profiles:
+
+            PRINT all profiles
+            GET user's choosen profile
+
+            IF user's choosen profile IN profiles:
+
+                GET user to enter profile password
+
+                IF profile password matches password of selected profile:
+
+                    logged_in equals true
+                    INVOKE main_menu FUNCTION
+
+                ELSE:
+
+                    PRINT message informing user that the password was wrong
+            
+            ELSE:
+
+                PRINT message informing user that the profile doesn't exist
+
+        ELSE:
+
+            GET new profile name
+            GET new profile password
+        
+            ADD dictionary including profile name and password to profiles_file
+            ADD dictionary including profile name and password to profiles
+
+
