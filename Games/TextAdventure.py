@@ -1,5 +1,6 @@
 import random
 import math
+from csv_reader_writer import write
 
 # Information for team: 
 # The code may seem large but that's purely because most of it is dialogue, as you can see by how most of the code is orange on the right side.
