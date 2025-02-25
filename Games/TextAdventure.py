@@ -4,8 +4,8 @@ from csv_reader_writer import write
 
 # Information for team: 
 # The code may seem large but that's purely because most of it is dialogue, as you can see by how most of the code is orange on the right side.
-# The score value is on in the player_stats dictionary on line 122.
-# The way score is added is shown in Fight function on lines 1296 and 1297
+# The score value is on in the player_stats dictionary on line 123.
+# The way score is added is shown in Fight function on lines 1297 and 1298
 
 # Debug Values. Do not apply to game.
 skip_intro = False
