@@ -1315,89 +1315,107 @@ def Fight(boss):
             boss['is_defeated'] = True
             fight_finished = True
 
-# Intro Sequence
-if not skip_intro:
+def main():
+    # Intro Sequence
+    if not skip_intro:
+        input(game_title_screen)
+        Dialogue([
+            "Once upon a time,", 
+            "There was a great nation known as the Even More United States of America, or EMUSA.", 
+            'The nation lived harmoniously. Folks from around the nation, from the North Pole to British Texas (which you may know as "Australia") were united under a common love for peace and democracy.',
+            "But one day, all of that changed.",
+            'A man only known as "N. Cage" stole the constitution of EMUSA, sending the country into chaos.',
+            'Apparently, he meant to steal a different document, so one thing led to another, and the 5 pages of the constitution were spread across the land.',
+            'Naturally, the most powerful of the nation jumped at the opportunity for power and stole the pages near to them.',
+            'You are a new intern at the White House.',
+            'So before you knew it, you were sent off to retrieve the pages and save EMUSA.',
+            '...',
+            'Who am I?',
+            "I'm the voice in your head, of course! I'll be guiding you on this important quest.",
+            "Now, let's save America!"
+        ])
+    
+        Fight(bosses[0])
 
-    input(game_title_screen)
-    Dialogue(["Once upon a time,", 
-          "There was a great nation known as the Even More United States of America, or EMUSA.", 
-          'The nation lived harmonously. Folks from around the nation, from the North Pole to British Texas (which you may know as "Australia") were united under a common love for peace and democracy',
-          "But one day, all of that changed.",
-          'A man only known as "N. Cage" stole the constitution of EMUSA, sending the country into chaos.',
-          'Apparently, he meant to steal a different document, so one thing lead to another, and the 5 pages of the constitution were spread across the land.',
-          'Naturally, the most powerful of the nation jumped at the opportunity for power, and stole the pages near to them',
-          'You are a new intern at the White House.',
-          'So before you knew it, you were sent off to retrieve the pages and save EMUSA.',
-          '...',
-          'Who am I?',
-          "I'm the voice in your head of course! I'll be guiding you on this important quest.",
-          "Now, let's save america!"])
-
-Fight(bosses[0])
-
-want_final_fight = True
-
-while True:
-
-    # If player wants final fight
-    if player_stats['pages'] == 4 and want_final_fight:
-        match ShowOptions(['Yes', 'No'], 'You are approaching the final boss. It is HIGHLY recommended to get ALL items availible. Do you wish to continue and fight the final boss?', False):
-
-            # Player does not want to fight final boss
-            case 1:
+    want_final_fight = False
+    
+    while True:
+        # If player wants final fight
+        if player_stats['pages'] == 4 and want_final_fight:
+            choice = ShowOptions(['Yes', 'No'], 'You are approaching the final boss. It is HIGHLY recommended to get ALL items available. Do you wish to continue and fight the final boss?', False)
+            
+            if choice == 1:
                 want_final_fight = False
                 continue
-            # Player does want to fight final boss
-            case 0:
-
+            elif choice == 0:
                 Fight(bosses[4])
-
+                
                 # Ending Sequence
                 if bosses[4]['is_defeated']:
-
-                    Dialogue(['And so, your journey concluded.', 'After returning the constitution to your white house, a grand festival was hosted in your honor.', 'Everyone from all walks of life, from British Texas to the North Pole, attended in high spirits',
-                              'As the fireworks show begins, you sit upon a far off hilltop and watch.', 'The fireworks are mesmorizing and the amazed crowds bring a smile to your face.', '"Hey!"', 
-                              'You turn around, confused to see the elf that captured you earlier.', '"The fat man could not attend so I am here to represent him"', '"He says sorry. It was not in the spirit of Christmas to try to hold the country hostage."',
-                              '"Thank ya. It seems like after yer fight with him, he has been a lot kinder."', 'You nod and then remember the hat you took from him', 'You shrug and toss it to her', '"Oh! Ya do not have to do this"',
-                              '"The hat called to ya!"', 'You shrug.', '"Wow... thank ya..."',  "Suddenly, Mr. Skellybones interjects.", '"Raaaah. Honored one, is that you?"', '"I have come to thank you, on behalf of the monsters of Spookyland"',
-                              '"We would not be thriving without your advocacy."', '"HELLO! I_THANK_YOU = TRUE. RATINGS = 10000!" says Super-Robo-Caeser.', '"Hello, dear intern, the Royal Family of North Dakota wishes to congratulate you on this incredible achievement.", says a representative from North Dakota', 
-                              'Hey, I thank you too.', "You've probably showed me some the greates excitement a voice in someone's head can ever have.", 'Thank you.'
-                              'And so, the fireworks shine brighter than ever,', 'and even better,', 'after the show you were bestowed the greatest honor an unpaid intern can get...', 'a wage of $8 an hour.', 
-                              'This is the End of the quest for the country.'])
+                    Dialogue([
+                        'And so, your journey concluded.',
+                        'After returning the constitution to your White House, a grand festival was hosted in your honor.',
+                        'Everyone from all walks of life, from British Texas to the North Pole, attended in high spirits.',
+                        'As the fireworks show begins, you sit upon a far-off hilltop and watch.',
+                        'The fireworks are mesmerizing and the amazed crowds bring a smile to your face.',
+                        '"Hey!"',
+                        'You turn around, confused to see the elf that captured you earlier.',
+                        '"The fat man could not attend, so I am here to represent him."',
+                        '"He says sorry. It was not in the spirit of Christmas to try to hold the country hostage."',
+                        '"Thank ya. It seems like after yer fight with him, he has been a lot kinder."',
+                        'You nod and then remember the hat you took from him.',
+                        'You shrug and toss it to her.',
+                        '"Oh! Ya do not have to do this."',
+                        '"The hat called to ya!"',
+                        'You shrug.',
+                        '"Wow... thank ya..."',
+                        "Suddenly, Mr. Skellybones interjects.",
+                        '"Raaaah. Honored one, is that you?"',
+                        '"I have come to thank you, on behalf of the monsters of Spookyland."',
+                        '"We would not be thriving without your advocacy."',
+                        '"HELLO! I_THANK_YOU = TRUE. RATINGS = 10000!" says Super-Robo-Caesar.',
+                        '"Hello, dear intern, the Royal Family of North Dakota wishes to congratulate you on this incredible achievement."',
+                        'Hey, I thank you too.',
+                        '"You've probably showed me some of the greatest excitement a voice in someone's head can ever have."',
+                        'Thank you.',
+                        'And so, the fireworks shine brighter than ever,',
+                        'and even better,',
+                        'after the show, you were bestowed the greatest honor an unpaid intern can get...',
+                        'a wage of $8 an hour.',
+                        'This is the End of the quest for the country.'
+                    ])
                     
-                    input(f'Final Score: {player_stats['score']}')
+                    input(f'Final Score: {player_stats["score"]}')
                     input(f'Quest for the Country designed, written, and developed by Darius Vaiaoga')
                     break
                 else:
                     continue
-
-    if player_stats['position'] != 0:
-        for boss in bosses:
-            if boss["location"] == player_stats['position'] and not boss["is_defeated"]:
-                Fight(boss)
-                break
-            elif boss["location"] == player_stats['position'] and boss["is_defeated"]:
-                break
-        else:
-            if player_stats['position'] not in places_been:
-                Dialogue(location_dialogue[player_stats['position']])
-                places_been.append(player_stats['position'])
-                inventory.append(location_items[player_stats['position']])
-                input('You have a new item! (1/1)')
-                ShowOptions([location_items[player_stats['position']]], 'Test', display_only=True)
-                input('Press anything to continue')
-
-    print(f'You are at {locations[player_stats['position']]}')
-    
-    if player_stats['pages'] != 4:
+        
+        if player_stats['position'] != 0:
+            for boss in bosses:
+                if boss["location"] == player_stats['position'] and not boss["is_defeated"]:
+                    Fight(boss)
+                    break
+                elif boss["location"] == player_stats['position'] and boss["is_defeated"]:
+                    break
+            else:
+                if player_stats['position'] not in places_been:
+                    Dialogue(location_dialogue[player_stats['position']])
+                    places_been.append(player_stats['position'])
+                    inventory.append(location_items[player_stats['position']])
+                    input('You have a new item! (1/1)')
+                    ShowOptions([location_items[player_stats['position']]], 'Test', display_only=True)
+                    input('Press anything to continue')
+        
+        print(f'You are at {locations[player_stats["position"]]}')
+        
         menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Exit']
-    else:
-        menu_options = ['Move', 'Stats', 'Inventory', 'Attacks', 'Settings', 'Exit', 'Fight Final Boss']
-
-    match ShowOptions(menu_options, 'What would you like to do? ', False):
-
-        # Move
-        case 0:
+        if player_stats['pages'] == 4:
+            menu_options.append('Fight Final Boss')
+        
+        choice = ShowOptions(menu_options, 'What would you like to do? ', False)
+        
+        if choice == 0:
             try:
                 print(f"Since you're currently at {locations[player_stats['position']]}, you can go to: ")
                 for place in places_to_go[player_stats['position']]:
@@ -1405,46 +1423,26 @@ while True:
                 player_stats['position'] = Move(player_stats['position'], int(input("Where would you like to go? ")))
             except:
                 print("Oops! Seems like you entered something incorrectly. Let's try that again")
-
-        # Show Stats
-        case 1:
+        elif choice == 1:
             print(f"-=-=-=-Your Stats-=-=-=-")
-            print(f"Health: {player_stats["health"]}/{player_stats["max_health"]} \nNerves: {player_stats["nerves"]}/{player_stats["max_nerves"]} \nAttack Potency: {player_stats["attack_potency"]}x \nRecovery Potency: {player_stats['recovery_potency']}")
-            print(f"Minimum Nerves: {player_stats['min_nerves']} \nStrength: {player_stats["strength"]} \nBravery: {player_stats["bravery"]} \nDurability: {player_stats['durability']} \nRecovery: {player_stats['recovery']}")
-            print(f'Pages: {player_stats['pages']}/5')
-            print(f'Level: {player_stats['level']}')
-            print(f'Score: {player_stats['score']}')
+            print(f"Health: {player_stats['health']}/{player_stats['max_health']}")
+            print(f'Pages: {player_stats["pages"]}/5')
+            print(f'Score: {player_stats["score"]}')
             input('Type anything to go back. ')
-
-        # Show Inventory
-        case 2:
+        elif choice == 2:
             ShowOptions(inventory, "Here are your items. ", True)
             input('Enter anything to go back. ')
-
-        # Show Player Attacks
-        case 3:
+        elif choice == 3:
             ShowOptions(player_attacks, '', True)
             input('Enter anything to go back. ')
-
-        # Enters Settings
-        case 4:
-
+        elif choice == 4:
             print(f'0. Instant Dialogue [{print_all_dialogue}]')
-            print(f'    Prints all dialogue at once instead of writing individual lines upon player input. Good if you are short on time.')
-
-            # If the player chooses, they can toggle whether or not dialogue is paced or not
-            if input('What setting would you like to modify (If none, enter anything but the numbers)? ') == '0':
-                if print_all_dialogue:
-                    print_all_dialogue = False
-                else:
-                    print_all_dialogue = True
-
-        # Exit
-        case 5:
+            if input('Modify a setting? (0 for instant dialogue) ') == '0':
+                print_all_dialogue = not print_all_dialogue
+        elif choice == 5:
             exit()
-
-        # Enter Final Boss (Choice only avaliable when player has 4/5 pages)
-        case 6:
+        elif choice == 6:
             want_final_fight = True
             continue
-    
+
+main()
