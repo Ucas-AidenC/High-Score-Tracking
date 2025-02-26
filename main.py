@@ -10,15 +10,21 @@ X = create a file
 
 #use varible for file path string to change what score isa printed
 
+all_highscores_numbergame ={} 
+all_highscores_adventure ={} 
+
+highscore =0 
+
 
 def save_score(parameter depending on which game):
-    with open ("fille path thing/.csv", "w" ) as file:
-        for rows in collmns#fix name 
+    with open ("file path thing/.csv", "w" ) as file:
+        for rows in collmns #fix name
+        print 
 
 
 
 def load_score():
-
+    with open (" file path", "r")
 
 
 
@@ -28,10 +34,19 @@ def user_highscore():
     # pritn thig \
 
 
+def compare_scores(): #use in save high score 
+    if score >= highscore
+    score = high score 
+
+
+
+def save_to_user(): 
+
 #comparing scores 
-if score >= highscore
-score = high score 
 with open ("fille path thing/.csv", "w" ) as file:
     #read info then add to profile name 
     file.writer(gighscore )
+
+
+def main(): 
 
