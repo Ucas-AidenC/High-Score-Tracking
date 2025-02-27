@@ -3,7 +3,7 @@ import csv
 profiles = []
 profile_names = []
 
-selected_profile = {}
+selected_profile = {'name': 'name', 'password': 'password'}
 
 def read_profiles():
 
@@ -29,7 +29,7 @@ def append_profile(name,password):
 
 def add_profile():
     
-    input("Creating new profile... ")
+    input("Creating new profile... (Press Enter to continue)")
             
     while True:
 
@@ -71,7 +71,10 @@ def remove_profile():
         for profile in profiles:
             print(f'- {profile['name']}')
 
-        profile_name = input('What profile do you want to remove? ')
+        profile_name = input('What profile do you want to remove? (Enter "Exit" to back out) ')
+
+        if profile_name.lower() == 'exit':
+            return selected_profile
         
         if profile_name in profile_names:
 
@@ -105,8 +108,10 @@ def remove_profile():
         profile_writer = csv.writer(profile_file)
         profile_writer.writerows(profiles_lists)
 
-    if selected_profile == profile_to_delete:
-        login()
+    if profile_to_delete == selected_profile:
+        return login()
+    else:
+        return selected_profile
 
 
 def login():
@@ -133,29 +138,13 @@ def login():
                             password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
 
                             if password_guess == profile['password']:
-                                return profile
+                                selected_profile['name'] = profile['name']
+                                selected_profile['password'] = profile['password']
+                                return selected_profile
                             
                             elif password_guess.lower() == 'exit':
                                 break
 
         else:   
-            input("No profile was found. ")
+            input("No profile was found. (Press enter to continue)")
             add_profile()
-
-def main():
-    
-    while True:
-
-        match input('What do you want to do? \n1. Add Profile \n2. Remove Profile \n3. Change Profile \n4. Back \nEnter a number: '):
-
-            case '1':
-                add_profile()
-
-            case '2':
-                remove_profile()
-                
-            case '3':
-                login()
-
-            case '4':
-                break
