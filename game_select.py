@@ -7,7 +7,7 @@ def display_leaderboard(filename, game_name):
         csv_reader = csv.reader(file)  
         next(csv_reader)  # Skip the header row
 
-        print(f"\n    {game_name}\n")  # Display the game name with spacing
+        print(f"\n    {game_name} Leaderboard\n")  # Display the game name with spacing
         
         for row in csv_reader:
             print(f"{row[0]} - {row[1]} - {row[2]}")  # Print each leaderboard entry in the required format
@@ -28,41 +28,46 @@ def game_selector():
 
             if select == 1:
                 display_leaderboard("guessing_game.csv", "Guess the Number")  # Show leaderboard before launching game
+                while True:
                 
-                try:
-                    play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
-                    
-                    if play_choice == 1:
-                        # This is where the code for running the game will be inserted
-                        print("\nLaunching Guess the Number...")  
+                    try:
+                        play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
 
-                    elif play_choice == 2:
-                        print("\nReturning to game selection menu...")  
+                        if play_choice == 1:
+                            # This is where the code for running the game will be inserted
+                            print("\nLaunching Guess the Number...")
+                            break
 
-                    else:
-                        print("\nInvalid input. Please enter 1 or 2. Returning to the game selection menu...")  
+                        elif play_choice == 2:
+                            print("\nReturning to game selection menu...")
+                            break
 
-                except ValueError:
-                    print("\nInvalid input. Please enter a whole number from 1-2. Returning to the game selection menu...")  
+                        else:
+                            print("\nInvalid input. Please enter 1 or 2.")  
+
+                    except ValueError:
+                        print("\nInvalid input. Please enter a whole number from 1-2.")  
 
             elif select == 2:
                 display_leaderboard("text_adventure.csv", "Adventure")  # Show leaderboard before launching game
-                
-                try:
-                    play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
-                    
-                    if play_choice == 1:
-                        # This is where the code for running the game will be inserted
-                        print("\nLaunching Adventure...")  
+                while True:
+                    try:
+                        play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
 
-                    elif play_choice == 2:
-                        print("\nReturning to game selection menu...")  
+                        if play_choice == 1:
+                            # This is where the code for running the game will be inserted
+                            print("\nLaunching Adventure...")
+                            break
 
-                    else:
-                        print("\nInvalid input. Please enter 1 or 2. Returning to the game selection menu...")  
+                        elif play_choice == 2:
+                            print("\nReturning to game selection menu...")
+                            break
 
-                except ValueError:
-                    print("\nInvalid input. Please enter a whole number from 1-2. Returning to the game selection menu...")  
+                        else:
+                            print("\nInvalid input. Please enter 1 or 2.")  
+
+                    except ValueError:
+                        print("\nInvalid input. Please enter a whole number from 1-2.")  
 
             elif select == 3:
                 display_all_leaderboards()  # Show all leaderboards
