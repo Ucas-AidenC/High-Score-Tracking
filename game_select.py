@@ -22,48 +22,47 @@ def game_selector():
     # Provides a menu for the user to play a game, view leaderboards, or return to the main menu.
 
     while True:
-        print("\nWhere would you like to go?\n(1) Play Guess the Number\n(2) Play Adventure\n(3) Display all leaderboards\n(4) Return to main menu\nPlease type the number corresponding to your selection: ")  
 
         try:
-            select = int(input())  # Convert input to an integer for validation
+            select = int(input("\nWhere would you like to go?\n(1) Play Guess the Number\n(2) Play Adventure\n(3) Display all leaderboards\n(4) Return to main menu\nPlease type the number corresponding to your selection: "))  # Convert input to an integer for validation
 
             if select == 1:
                 display_leaderboard("guessing_game.csv", "Guess the Number")  # Show leaderboard before launching game
                 
                 try:
-                    play_choice = int(input("Would you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
+                    play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
                     
                     if play_choice == 1:
                         # This is where the code for running the game will be inserted
-                        print("Launching Guess the Number...")  
+                        print("\nLaunching Guess the Number...")  
 
                     elif play_choice == 2:
-                        print("Returning to game selection menu...")  
+                        print("\nReturning to game selection menu...")  
 
                     else:
-                        print("Invalid input. Please enter 1 or 2. Returning to the game selection menu...")  
+                        print("\nInvalid input. Please enter 1 or 2. Returning to the game selection menu...")  
 
                 except ValueError:
-                    print("Invalid input. Please enter a whole number from 1-2. Returning to the game selection menu...")  
+                    print("\nInvalid input. Please enter a whole number from 1-2. Returning to the game selection menu...")  
 
             elif select == 2:
                 display_leaderboard("text_adventure.csv", "Adventure")  # Show leaderboard before launching game
                 
                 try:
-                    play_choice = int(input("Would you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
+                    play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
                     
                     if play_choice == 1:
                         # This is where the code for running the game will be inserted
-                        print("Launching Adventure...")  
+                        print("\nLaunching Adventure...")  
 
                     elif play_choice == 2:
-                        print("Returning to game selection menu...")  
+                        print("\nReturning to game selection menu...")  
 
                     else:
-                        print("Invalid input. Please enter 1 or 2. Returning to the game selection menu...")  
+                        print("\nInvalid input. Please enter 1 or 2. Returning to the game selection menu...")  
 
                 except ValueError:
-                    print("Invalid input. Please enter a whole number from 1-2. Returning to the game selection menu...")  
+                    print("\nInvalid input. Please enter a whole number from 1-2. Returning to the game selection menu...")  
 
             elif select == 3:
                 display_all_leaderboards()  # Show all leaderboards
@@ -73,9 +72,9 @@ def game_selector():
                 break  
 
             else:
-                print("\nInvalid selection. Please enter 1, 2, 3, or 4.")  # Handle invalid number selections
+                print("\nInvalid selection. Please enter a number 1-4.")  # Handle invalid number selections
 
         except ValueError:
-            print("Invalid input. Please enter a whole number.")  # Handle cases where user input is not a valid number
+            print("\nInvalid input. Please enter a whole number.")  # Handle cases where user input is not a valid number
 
 game_selector()  # Run the game selector menu
