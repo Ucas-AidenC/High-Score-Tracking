@@ -1,4 +1,3 @@
-#main.py initial commit
 import login
 
 selected_profile = {}
