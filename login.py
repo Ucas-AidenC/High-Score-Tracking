@@ -1,69 +1,6 @@
 import csv
 
 profiles = []
-
-def read_profiles():
-
-    with open('profiles_file.csv', 'r') as csvfile:
-
-        for line in csvfile:
-
-            # Splits the csv file by line then by value type (name or password) 
-            data = line.split(',')
-            profile = {'name': '', 'password': ''}
-
-            i = 0
-            for value in data:
-
-                # IF value is name
-                if i % 2 == 0:
-                    profile['name'] = value
-
-                # IF value is password
-                else:
-                    profile['password'] = value
-                    profiles.append(profile)
-
-                i += 1
-
-    profiles.pop(0)
-
-def create_profile(name, password):
-
-    with open('profiles_file.csv', 'a', newline='') as csvfile:
-
-        fieldnames = ['name', 'password']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writerows([{'name': name, 'password': password}])
-
-def login_menu():
-
-    read_profiles()
-
-    profile_names = []
-
-    for profile in profiles:
-        profile_names.append(profile['name'])
-
-    while True:
-
-        # IF there is a profile in profiles
-        if profiles:
-
-            print('Profiles:')
-            
-            for profile_name in profile_names:
-                print(f'- {profile_name}')
-
-        else:
-
-            input('No Profile Found.')
-            input('Creating Profile...')
-            create_profile(input('Choose a username: '), input('Choose a password: '))
-
-import csv
-
-profiles = []
 profile_names = []
 
 selected_profile = {}
@@ -76,10 +13,14 @@ def read_profiles():
 
         for profile in csvFile:
 
+            if (profile[0] != 'name' and profile[1] != 'password') and (profile[0] not in profile_names):
+
+                profiles.append({'name': profile[0], 'password': profile[1]})
+
             if profile[0] not in profile_names:
                 profile_names.append(profile[0])
 
-def write_profiles():
+def append_profile(name,password):
 
     with open('profile_file.csv', 'a', newline='') as profile_file:
 
@@ -87,8 +28,8 @@ def write_profiles():
         profile_writer.writerow([name,password])
 
 def add_profile():
-    input("No profile was found.")
-    input("Creating new profile...")
+    
+    input("Creating new profile... ")
             
     while True:
 
@@ -120,6 +61,53 @@ def add_profile():
             read_profiles()
             break
 
+def remove_profile():
+
+    profile_to_delete = {}
+    profile_selected = False
+
+    while not profile_selected:
+
+        for profile in profiles:
+            print(f'- {profile['name']}')
+
+        profile_name = input('What profile do you want to remove? ')
+        
+        if profile_name in profile_names:
+
+            for profile in profiles:
+
+                if profile_name == profile['name']:
+        
+                       while True:
+
+                            password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
+
+                            if password_guess == profile['password']:
+                                profile_to_delete = profile
+                                profile_selected = True
+                                break
+                            
+                            elif password_guess.lower() == 'exit':
+                                break
+        else:
+            input('Could not find profile.')
+
+    profiles.remove(profile_to_delete)
+
+    profiles_lists = [['name', 'password']]
+
+    for profile in profiles:
+        profiles_lists.append([profile['name'], profile['password']])
+
+    with open('profile_file.csv', 'w', newline='') as profile_file:
+
+        profile_writer = csv.writer(profile_file)
+        profile_writer.writerows(profiles_lists)
+
+    if selected_profile == profile_to_delete:
+        login()
+
 
 def login():
     
@@ -142,7 +130,7 @@ def login():
                         
                         while True:
 
-                            password_guess = input('What is the profile password? (Type "Exit" to change profile)')
+                            password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
 
                             if password_guess == profile['password']:
                                 return profile
@@ -151,22 +139,23 @@ def login():
                                 break
 
         else:   
+            input("No profile was found. ")
             add_profile()
-            
-selected_profile = login()
-
-print(selected_profile)
 
 def main():
     
-    match input('What menu do you want to access? \n1. Games \n2. Profiles \n3. Exit'):
-        
-        case '2':
+    while True:
 
-            match input('What do you want to do? \n1. Add Profile \n2. Remove Profile \n3. Change Profile'):
+        match input('What do you want to do? \n1. Add Profile \n2. Remove Profile \n3. Change Profile \n4. Back \nEnter a number: '):
 
-                case '1':
-                    add_profile()
+            case '1':
+                add_profile()
+
+            case '2':
+                remove_profile()
                 
-                case '3':
-                    login()
+            case '3':
+                login()
+
+            case '4':
+                break
