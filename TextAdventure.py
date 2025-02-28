@@ -11,7 +11,7 @@ from scores import save_high_scores, save_to_profile
 
 # Debug Values. Do not apply to game.
 skip_intro = False
-debug_attacks = False
+debug_attacks = True
 print_all_dialogue = False
 
 game_title_screen = '''
@@ -1417,7 +1417,9 @@ def main():
         
         choice = ShowOptions(menu_options, 'What would you like to do? ', False)
         
+        # Move
         if choice == 0:
+
             try:
                 print(f"Since you're currently at {locations[player_stats['position']]}, you can go to: ")
                 for place in places_to_go[player_stats['position']]:
@@ -1426,6 +1428,7 @@ def main():
             except:
                 print("Oops! Seems like you entered something incorrectly. Let's try that again")
 
+        # Stats
         elif choice == 1:
             print(f"-=-=-=-Your Stats-=-=-=-")
             print(f"Health: {player_stats['health']}/{player_stats['max_health']}")
@@ -1433,25 +1436,32 @@ def main():
             print(f'Score: {player_stats["score"]}')
             input('Type anything to go back. ')
 
+        # Inventory
         elif choice == 2:
             ShowOptions(inventory, "Here are your items. ", True)
             input('Enter anything to go back. ')
 
+        # Attacks
         elif choice == 3:
             ShowOptions(player_attacks, '', True)
             input('Enter anything to go back. ')
 
+        # Settings
         elif choice == 4:
             print(f'0. Instant Dialogue [{print_all_dialogue}]')
+
+            # Toogles setting to print all dialogue at once rather than pacing it
             if input('Modify a setting? (0 for instant dialogue) ') == '0':
                 print_all_dialogue = not print_all_dialogue
                 
+        # Exit
         elif choice == 5:
             Dialogue(['Hey!', 'What are you doing?!', "If you exit back to the main menu, you'll lose all of your progress!"])
             if input('If you are sure you want to leave, type "Yes":') == "Yes":
                 Dialogue(["I see...", 'Welp.', 'I guess our country is doomed because of YOUR actions.', 'Wait, if you leave, what will happen to me?', '...', 'WAIT N-'])
                 break
-
+        
+        # Final Boss
         elif choice == 6:
             want_final_fight = True
             continue

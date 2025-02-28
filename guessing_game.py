@@ -12,7 +12,7 @@ def time_delay():
 # Starting the game
 
 
-print("Welcome to the number guessing game!")
+# print("Welcome to the number guessing game!")
 
 # File for high score
 
@@ -101,5 +101,5 @@ def guess_number(number, attempts):
 
 
 # Start the game
-play_game()
+#play_game()
 

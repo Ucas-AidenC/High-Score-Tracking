@@ -5,6 +5,7 @@ profile_names = []
 
 selected_profile = {'name': 'name', 'password': 'password'}
 
+# Reads profile onto profiles
 def read_profiles():
 
     with open('profile_file.csv', 'r') as profile_file:
@@ -12,7 +13,8 @@ def read_profiles():
         csvFile = csv.reader(profile_file)
 
         for profile in csvFile:
-
+            
+            # Cheacks if profile isn't the same as the header or if there already is a profile name
             if (profile[0] != 'name' and profile[1] != 'password') and (profile[0] not in profile_names):
 
                 profiles.append({'name': profile[0], 'password': profile[1]})
@@ -20,6 +22,7 @@ def read_profiles():
             if profile[0] not in profile_names:
                 profile_names.append(profile[0])
 
+# Adds profile to file
 def append_profile(name,password):
 
     with open('profile_file.csv', 'a', newline='') as profile_file:
@@ -27,6 +30,7 @@ def append_profile(name,password):
         profile_writer = csv.writer(profile_file)
         profile_writer.writerow([name,password])
 
+# Adds profile to profiles
 def add_profile():
     
     input("Creating new profile... (Press Enter to continue)")
@@ -61,6 +65,7 @@ def add_profile():
             read_profiles()
             break
 
+# Removes a profile
 def remove_profile():
 
     profile_to_delete = {}
@@ -76,12 +81,14 @@ def remove_profile():
         if profile_name.lower() == 'exit':
             return selected_profile
         
+        # Checks if profile exists
         if profile_name in profile_names:
 
             for profile in profiles:
-
+                
+                # Has user input a password before deleting the profile
                 if profile_name == profile['name']:
-        
+
                        while True:
 
                             password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
@@ -100,17 +107,24 @@ def remove_profile():
 
     profiles_lists = [['name', 'password']]
 
+    read_profiles()
+
+    # Reappends the header
     for profile in profiles:
         profiles_lists.append([profile['name'], profile['password']])
-
+    
+    # Readds profiles onto profile
     with open('profile_file.csv', 'w', newline='') as profile_file:
 
         profile_writer = csv.writer(profile_file)
         profile_writer.writerows(profiles_lists)
 
+    # Has user relogin if they're deleting the profile they're on
     if profile_to_delete == selected_profile:
+        read_profiles
         return login()
     else:
+        read_profiles()
         return selected_profile
 
 

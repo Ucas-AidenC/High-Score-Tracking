@@ -23,6 +23,7 @@ def load_high_scores(game_file):
         pass  # If file doesn't exist or has invalid data, start fresh
     return leaderboard
 
+# Sends the new information to the leaderboard then compares it
 def save_high_scores(game_file, leaderboard):
     for i in range(len(leaderboard) - 1):
         for j in range(i + 1, len(leaderboard)):
