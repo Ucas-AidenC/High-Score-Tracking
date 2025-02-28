@@ -1,5 +1,6 @@
 import csv  # Import the CSV module to read leaderboard files
 import TextAdventure
+import guessing_game
 import login  # Import login to get the username
 import scores  # Import scores for score handling
 
@@ -39,6 +40,11 @@ def game_selector():
                         if play_choice == 1:
                             # This is where the code for running the game will be inserted
                             print("\nLaunching Guess the Number...")
+                            guessing_game.play_game()
+                            username = login.selected_profile['name']
+                            score = guessing_game.score
+                            scores.compare("guessing_game.csv", username, score)
+                            scores.save_to_profile(username, "guessing_game.csv", score)
                             break
 
                         elif play_choice == 2:
@@ -66,7 +72,7 @@ def game_selector():
                 
                             # Update leaderboard using scores.py logic
                             scores.compare("text_adventure.csv", username, score)
-                            scores.save_to_profile(username, "user_profiles_text_adventure.csv", score)
+                            scores.save_to_profile(username, "text_adventure.csv", score)
                             print("\nYour score has been recorded!")
                             break
 

@@ -2,21 +2,18 @@ import random
 import time
 import os
 def time_delay():
-    print("loding.")
+    print("loading.")
     time.sleep(0.3)
-    print("loding..")
+    print("loading..")
     time.sleep(0.3)
-    print("loding...")
+    print("loading...")
     time.sleep(0.5)
 
 # Starting the game
 
-
-print("Welcome to the number guessing game!")
-
 # File for high score
 
-high_score_file = "Tesing code\high_score.txt"
+high_score_file = "high_score.txt"
 
 
 # Load high score
@@ -101,5 +98,10 @@ def guess_number(number, attempts):
 
 
 # Start the game
-play_game()
+if __name__ == "__main__":
+    print("Welcome to the number guessing game!")
+    play_game()
+
+
+
 

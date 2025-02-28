@@ -6,8 +6,6 @@ scores = {}
 # File paths for leaderboards and user profiles
 leaderboard_number = "guessing_game.csv"
 leaderboard_adventure = "text_adventure.csv"
-user_profile_number = "user_profiles_number_guessing.csv"
-user_profile_adventure = "user_profiles_text_adventure.csv"
 
 # Load scores from a CSV file
 def load_high_scores(game_file):
