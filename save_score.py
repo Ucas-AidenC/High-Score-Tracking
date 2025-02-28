@@ -7,7 +7,7 @@ W+= read and write (will give error if no file exists)
 A = append(add thing that cannot be overwritten)(will create a file if one doesn’t exist) 
 A+ = read and append 
 X = create a file 
-"""
+
 
 import csv
 
@@ -127,7 +127,7 @@ def main():
             elif game_choice == "2":
                 print_user_scores(username, user_profile_adventure, "Text adventure game")
             else:
-                print("Invalid choice.")
+                print("Invalid choice")
                 continue
         
         elif choice == "4":
@@ -135,6 +135,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""
+import csv
 
 scores={}
 
