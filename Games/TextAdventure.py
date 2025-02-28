@@ -1423,22 +1423,27 @@ def main():
                 player_stats['position'] = Move(player_stats['position'], int(input("Where would you like to go? ")))
             except:
                 print("Oops! Seems like you entered something incorrectly. Let's try that again")
+
         elif choice == 1:
             print(f"-=-=-=-Your Stats-=-=-=-")
             print(f"Health: {player_stats['health']}/{player_stats['max_health']}")
             print(f'Pages: {player_stats["pages"]}/5')
             print(f'Score: {player_stats["score"]}')
             input('Type anything to go back. ')
+
         elif choice == 2:
             ShowOptions(inventory, "Here are your items. ", True)
             input('Enter anything to go back. ')
+
         elif choice == 3:
             ShowOptions(player_attacks, '', True)
             input('Enter anything to go back. ')
+
         elif choice == 4:
             print(f'0. Instant Dialogue [{print_all_dialogue}]')
             if input('Modify a setting? (0 for instant dialogue) ') == '0':
                 print_all_dialogue = not print_all_dialogue
+                
         elif choice == 5:
             Dialogue(['Hey!', 'What are you doing?!', "If you exit back to the main menu, you'll lose all of your progress!"])
             if input('If you are sure you want to leave, type "Yes":') == "Yes":
