@@ -171,11 +171,21 @@ def compare(game_file, username, score):
     else:
         scores[username] = score
     save_high_scores(game_file, scores)
+#printing for all user scores
+def print_user_scores(username, profile_file, game_name):
+    with open(profile_file, "r") as file:
+        reader = csv.reader(file)
+        print(f"Scores for {username} in {game_name}:")
+        for row in reader:
+            if row[0] == username:
+                print(f"Score: {row[1]}")
+
 
 if __name__ == "main"
-    def compare(game_file, username, score):
-    def save_to_profile(username, profile_file, score):
-    def save_high_scores(game_file, scores):
-    def load_high_scores(game_file):
+    compare(game_file, username, score)
+    save_to_profile(username, profile_file, score)
+    save_high_scores(game_file, scores)
+    load_high_scores(game_file)
+    print_user_scores(username, profile_file, game_name)
     
 
