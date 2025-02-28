@@ -23,11 +23,13 @@ def load_high_scores(game_file):
         pass  # If file doesn't exist or has invalid data, start fresh
     return leaderboard
 
-# Save scores to the CSV file, maintaining the top 10 and sorting
 def save_high_scores(game_file, leaderboard):
     for i in range(len(leaderboard) - 1):
         for j in range(i + 1, len(leaderboard)):
-            if leaderboard[i][0] < leaderboard[j][0] or (leaderboard[i][0] == leaderboard[j][0] and leaderboard[i][1] > leaderboard[j][1]):
+            score_i, time_i = leaderboard[i]
+            score_j, time_j = leaderboard[j]
+
+            if score_i < score_j or (score_i == score_j and time_i > time_j):
                 leaderboard[i], leaderboard[j] = leaderboard[j], leaderboard[i]
     
     if len(leaderboard) > 10:
