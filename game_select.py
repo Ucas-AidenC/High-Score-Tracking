@@ -1,4 +1,7 @@
 import csv  # Import the CSV module to read leaderboard files
+import TextAdventure
+import login  # Import login to get the username
+import scores  # Import scores for score handling
 
 def display_leaderboard(filename, game_name):
     # Reads and displays the leaderboard for a given game. The format is: place - score - username.
@@ -55,8 +58,16 @@ def game_selector():
                         play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
 
                         if play_choice == 1:
-                            # This is where the code for running the game will be inserted
+
                             print("\nLaunching Adventure...")
+                            TextAdventure.main()
+                            username = login.selected_profile['name']
+                            score = TextAdventure.player_stats['score']
+                
+                            # Update leaderboard using scores.py logic
+                            scores.compare("text_adventure.csv", username, score)
+                            scores.save_to_profile(username, "user_profiles_text_adventure.csv", score)
+                            print("\nYour score has been recorded!")
                             break
 
                         elif play_choice == 2:
@@ -82,4 +93,5 @@ def game_selector():
         except ValueError:
             print("\nInvalid input. Please enter a whole number.")  # Handle cases where user input is not a valid number
 
-game_selector()  # Run the game selector menu
+if __name__ == "main":
+    game_selector()
