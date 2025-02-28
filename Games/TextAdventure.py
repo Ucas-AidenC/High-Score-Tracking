@@ -1337,7 +1337,7 @@ def main():
     
         Fight(bosses[0])
 
-    want_final_fight = False
+    want_final_fight = True
     
     while True:
         # If player wants final fight
@@ -1376,7 +1376,7 @@ def main():
                         '"HELLO! I_THANK_YOU = TRUE. RATINGS = 10000!" says Super-Robo-Caesar.',
                         '"Hello, dear intern, the Royal Family of North Dakota wishes to congratulate you on this incredible achievement."',
                         'Hey, I thank you too.',
-                        '"You've probably showed me some of the greatest excitement a voice in someone's head can ever have."',
+                        "You've probably showed me some of the greatest excitement a voice in someone's head can ever have.",
                         'Thank you.',
                         'And so, the fireworks shine brighter than ever,',
                         'and even better,',
@@ -1440,9 +1440,11 @@ def main():
             if input('Modify a setting? (0 for instant dialogue) ') == '0':
                 print_all_dialogue = not print_all_dialogue
         elif choice == 5:
-            exit()
+            Dialogue(['Hey!', 'What are you doing?!', "If you exit back to the main menu, you'll lose all of your progress!"])
+            if input('If you are sure you want to leave, type "Yes":') == "Yes":
+                Dialogue(["I see...", 'Welp.', 'I guess our country is doomed because of YOUR actions.', 'Wait, if you leave, what will happen to me?', '...', 'WAIT N-'])
+                break
+
         elif choice == 6:
             want_final_fight = True
             continue
-
-main()
