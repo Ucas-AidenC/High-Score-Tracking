@@ -53,7 +53,7 @@ def print_user_scores(username, profile_file, game_name):
 
 if __name__ == "main"
     compare(game_file, username, score)
-    save_to_profile(username, profile_file, score)
-    save_high_scores(game_file, scores)
+    save_to_profile(username, profile_file, player_stats['score'])
+    save_high_scores(game_file, player_stats['score'])
     load_high_scores(game_file)
     print_user_scores(username, profile_file, game_name)
