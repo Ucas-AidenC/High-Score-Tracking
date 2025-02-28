@@ -3,7 +3,7 @@ import csv
 profiles = []
 profile_names = []
 
-selected_profile = {}
+selected_profile = {'name': 'name', 'password': 'password'}
 
 def read_profiles():
 
@@ -13,11 +13,12 @@ def read_profiles():
 
         for profile in csvFile:
 
+            if (profile[0] != 'name' and profile[1] != 'password') and (profile[0] not in profile_names):
+
+                profiles.append({'name': profile[0], 'password': profile[1]})
+
             if profile[0] not in profile_names:
                 profile_names.append(profile[0])
-
-            if profile[0] != 'name' and profile[1] != 'password':
-                profiles.append({'name': profile[0], 'password': profile[1]})
 
 def append_profile(name,password):
 
@@ -27,8 +28,8 @@ def append_profile(name,password):
         profile_writer.writerow([name,password])
 
 def add_profile():
-    input("No profile was found.")
-    input("Creating new profile...")
+    
+    input("Creating new profile... (Press Enter to continue)")
             
     while True:
 
@@ -60,6 +61,58 @@ def add_profile():
             read_profiles()
             break
 
+def remove_profile():
+
+    profile_to_delete = {}
+    profile_selected = False
+
+    while not profile_selected:
+
+        for profile in profiles:
+            print(f'- {profile['name']}')
+
+        profile_name = input('What profile do you want to remove? (Enter "Exit" to back out) ')
+
+        if profile_name.lower() == 'exit':
+            return selected_profile
+        
+        if profile_name in profile_names:
+
+            for profile in profiles:
+
+                if profile_name == profile['name']:
+        
+                       while True:
+
+                            password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
+
+                            if password_guess == profile['password']:
+                                profile_to_delete = profile
+                                profile_selected = True
+                                break
+                            
+                            elif password_guess.lower() == 'exit':
+                                break
+        else:
+            input('Could not find profile.')
+
+    profiles.remove(profile_to_delete)
+
+    profiles_lists = [['name', 'password']]
+
+    for profile in profiles:
+        profiles_lists.append([profile['name'], profile['password']])
+
+    with open('profile_file.csv', 'w', newline='') as profile_file:
+
+        profile_writer = csv.writer(profile_file)
+        profile_writer.writerows(profiles_lists)
+
+    if profile_to_delete == selected_profile:
+        return login()
+    else:
+        return selected_profile
+
 
 def login():
     
@@ -82,31 +135,16 @@ def login():
                         
                         while True:
 
-                            password_guess = input('What is the profile password? (Type "Exit" to change profile)')
+                            password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
 
                             if password_guess == profile['password']:
-                                return profile
+                                selected_profile['name'] = profile['name']
+                                selected_profile['password'] = profile['password']
+                                return selected_profile
                             
                             elif password_guess.lower() == 'exit':
                                 break
 
         else:   
+            input("No profile was found. (Press enter to continue)")
             add_profile()
-            
-selected_profile = login()
-
-print(selected_profile)
-
-def main():
-    
-    match input('What menu do you want to access? \n1. Games \n2. Profiles \n3. Exit'):
-        
-        case '2':
-
-            match input('What do you want to do? \n1. Add Profile \n2. Remove Profile \n3. Change Profile'):
-
-                case '1':
-                    add_profile()
-                
-                case '3':
-                    login()
