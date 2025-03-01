@@ -1,6 +1,5 @@
 import random
 import math
-from scores import save_high_scores, save_to_profile
 
 
 
@@ -11,7 +10,7 @@ from scores import save_high_scores, save_to_profile
 
 # Debug Values. Do not apply to game.
 skip_intro = False
-debug_attacks = False
+debug_attacks = True
 print_all_dialogue = False
 
 game_title_screen = '''

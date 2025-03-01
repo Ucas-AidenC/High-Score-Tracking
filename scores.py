@@ -1,71 +1,51 @@
 import csv
 
-# Dictionary for storing scores
-scores = {}
+# Dictionary for storing high scores (key: username, value: highest score)
+scores_dict = {}
 
-# File paths for leaderboards and user profiles
-leaderboard_number = "guessing_game.csv"
-leaderboard_adventure = "text_adventure.csv"
-
-# Load scores from a CSV file
+# Load scores from a CSV file into the dictionary
 def load_high_scores(game_file):
-    leaderboard = []
+    global scores_dict
+    scores_dict = {}  # Reset dictionary before loading
+
     try:
         with open(game_file, "r") as file:
             reader = csv.reader(file)
             next(reader)  # Skip header
             for row in reader:
-                if len(row) == 3:  # Ensure correct format
-                    leaderboard.append([int(row[1]), row[2]])  # Store as [score, username]
+                if len(row) == 2:  # Ensure correct format
+                    username = row[0]
+                    score = int(row[1])
+                    scores_dict[username] = score
     except (FileNotFoundError, ValueError):
         pass  # If file doesn't exist or has invalid data, start fresh
-    return leaderboard
 
-def save_high_scores(game_file, leaderboard):
-    for i in range(len(leaderboard) - 1):
-        for j in range(i + 1, len(leaderboard)):
-            score_i, time_i = leaderboard[i]
-            score_j, time_j = leaderboard[j]
-
-            if score_i < score_j or (score_i == score_j and time_i > time_j):
-                leaderboard[i], leaderboard[j] = leaderboard[j], leaderboard[i]
-    
-    if len(leaderboard) > 10:
-        leaderboard = leaderboard[:10]  # Keep only top 10
-    
+# Save the dictionary of high scores to a CSV file
+def save_high_scores(game_file):
     with open(game_file, "w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["place", "score", "user"])  # Write header
-        place = 1
-        for entry in leaderboard:
-            writer.writerow([place, entry[0], entry[1]])
-            place += 1
+        writer.writerow(["user", "score"])  # Header
+        for username, score in scores_dict.items():
+            writer.writerow([username, score])
 
-# Save user score to profile history
-def save_to_profile(username, profile_file, score):
-    with open(profile_file, "a", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow([username, score])
-
-# Compare scores and update the leaderboard
+# Compare scores, update both dictionary and CSV
 def compare(game_file, username, score):
-    leaderboard = load_high_scores(game_file)
-    leaderboard.append([score, username])  # Append new score
-    save_high_scores(game_file, leaderboard)
+    load_high_scores(game_file)  # Load current scores into dictionary
 
-# Print user scores from profile history
-def print_user_scores(username, profile_file, game_name):
-    try:
-        with open(profile_file, "r") as file:
-            reader = csv.reader(file)
-            print(f"Scores for {username} in {game_name}:")
-            for row in reader:
-                if row[0] == username:
-                    print(f"Score: {row[1]}")
-    except FileNotFoundError:
-        print("No scores found.")
+    # Only update if the new score is higher
+    if username in scores_dict:
+        if score > scores_dict[username]:
+            scores_dict[username] = score
+    else:
+        scores_dict[username] = score  # New entry
 
+    save_high_scores(game_file)  # Save updated dictionary to CSV
+
+# Ensure dictionary is updated immediately when loading scores elsewhere
+def update_dictionary_from_csv(game_file):
+    load_high_scores(game_file)
+
+# Example usage
 if __name__ == "__main__":
-    compare(leaderboard_adventure, "test_user", 150)
-    save_to_profile("test_user", user_profile_adventure, 150)
-    print_user_scores("test_user", user_profile_adventure, "Adventure Game")
+    compare("text_adventure.csv", "test_user", 150)
+    print(scores_dict)  # Debugging: Print updated dictionary
