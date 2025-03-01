@@ -10,7 +10,7 @@ import math
 
 # Debug Values. Do not apply to game.
 skip_intro = False
-debug_attacks = True
+debug_attacks = False
 print_all_dialogue = False
 
 game_title_screen = '''
