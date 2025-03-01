@@ -17,7 +17,7 @@ def display_leaderboard(game_file, game_name):
         print(f"{place} - {score} - {username}")
         place += 1
 
-# Display all leaderboards
+# Display All Leaderboards
 def display_all_leaderboards():
     display_leaderboard("guessing_game.csv", "Guess the Number")
     display_leaderboard("text_adventure.csv", "Adventure")
