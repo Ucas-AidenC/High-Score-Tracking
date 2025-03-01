@@ -1,7 +1,7 @@
 import login
 import game_select
 
-# Code originally written by Darius, rewritten by Mark
+# Code originally written by Darius, edited by Mark
 
 def main():
     # Ensure the user logs in before anything else

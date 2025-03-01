@@ -3,7 +3,7 @@ import TextAdventure
 import guessing_game
 import login  # Import login to get the username
 
-# Code originally written by Mark
+# Code by Mark
 
 # Display the leaderboard from the dictionary
 def display_leaderboard(game_file, game_name):

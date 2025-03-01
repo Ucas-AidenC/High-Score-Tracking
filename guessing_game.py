@@ -1,7 +1,7 @@
 import random
 import time
 
-# Code originally by Aaron, rewritten by Mark
+# Code by Aaron
 
 def time_delay():
     print("loading.")

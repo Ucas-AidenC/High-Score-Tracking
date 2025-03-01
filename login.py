@@ -133,38 +133,46 @@ def login():
     while True:
         
         # IF there is a profile in profiles
-        if profiles:
+        choice = input("Do you want to login to an existing profile, or create a new one? (Enter 'login' or 'create'): ").lower()
+        
+        if choice == 'create':
+            add_profile()
+            continue
+        
+        elif choice == 'login':
 
-            # Print all profiles
-            for profile in profiles:
-                print(f'- {profile['name']}')
+            if profiles:
 
-            # User selects profile and the code confirms if that profile exists
-            selected_profile_name = input('Choose a profile: ')
-            if selected_profile_name in profile_names:
-
-                # Find profile where the name corresponds with the selected profile name
+                # Print all profiles
                 for profile in profiles:
+                    print(f'- {profile['name']}')
+
+                # User selects profile and the code confirms if that profile exists
+                selected_profile_name = input('Choose a profile: ')
+                if selected_profile_name in profile_names:
+
+                    # Find profile where the name corresponds with the selected profile name
+                    for profile in profiles:
 
                 
-                    if selected_profile_name == profile['name']:
+                        if selected_profile_name == profile['name']:
                         
-                        while True:
+                            while True:
 
 
-                            password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
+                                password_guess = input('What is the profile password? (Type "Exit" to change profile) ')
 
-                            # Sets selected_profile to the selected profile if the password is correct
-                            if password_guess == profile['password']:
-                                selected_profile['name'] = profile['name']
-                                selected_profile['password'] = profile['password']
-                                return selected_profile
+                                # Sets selected_profile to the selected profile if the password is correct
+                                if password_guess == profile['password']:
+                                    selected_profile['name'] = profile['name']
+                                    selected_profile['password'] = profile['password']
+                                    return selected_profile
                             
-                            # User changes profiles
-                            elif password_guess.lower() == 'exit':
-                                break
+                                # User changes profiles
+                                elif password_guess.lower() == 'exit':
+                                    break
         
-        # User enters profile that doesn't exist
-        else:   
-            input("No profile was found. (Press enter to continue)")
-            add_profile()
+            # User enters profile that doesn't exist
+            else:   
+                input("No profile was found. (Press enter to continue)")
+                add_profile()
