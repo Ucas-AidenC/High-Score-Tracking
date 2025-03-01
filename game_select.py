@@ -3,6 +3,8 @@ import TextAdventure
 import guessing_game
 import login  # Import login to get the username
 
+# Code originally written by Mark
+
 # Display the leaderboard from the dictionary
 def display_leaderboard(game_file, game_name):
     scores.update_dictionary_from_csv(game_file)  # Ensure dictionary is up to date
@@ -23,11 +25,12 @@ def display_all_leaderboards():
 def game_selector():
     while True:
         try:
-            select = int(input("\nWhere would you like to go?\n(1) Play Guess the Number\n(2) Play Adventure\n(3) Display all leaderboards\n(4) Return to main menu\nPlease type the number corresponding to your selection: "))
+            select = int(input("\nWhere would you like to go?\n1. Play Guess the Number\n2. Play Adventure\n3. Display all leaderboards\n4. Return to main menu\nPlease type the number corresponding to your selection: "))
 
+            # Number Game
             if select == 1:
                 display_leaderboard("guessing_game.csv", "Guess the Number")
-                play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
+                play_choice = int(input("\nWould you like to play this game?\n1. Yes\n2. No\nPlease type the number corresponding to your selection: "))
 
                 if play_choice == 1:
                     print("\nLaunching Guess the Number...")
@@ -35,9 +38,10 @@ def game_selector():
                     username = login.selected_profile['name']
                     scores.compare("guessing_game.csv", username, score)
 
+            # Text Adventure
             elif select == 2:
                 display_leaderboard("text_adventure.csv", "Adventure")
-                play_choice = int(input("\nWould you like to play this game?\n(1) Yes\n(2) No\nPlease type the number corresponding to your selection: "))
+                play_choice = int(input("\nWould you like to play this game?\n1. Yes\n2. No\nPlease type the number corresponding to your selection: "))
 
                 if play_choice == 1:
                     print("\nLaunching Adventure...")
@@ -47,13 +51,16 @@ def game_selector():
                     scores.compare("text_adventure.csv", username, score)
                     print("\nYour score has been recorded!")
 
+            # Display all leaderboards
             elif select == 3:
                 display_all_leaderboards()
 
+            # Return to main menu
             elif select == 4:
                 print("\nReturning to main menu...")
                 break
-
+            
+            # Invalid Input
             else:
                 print("\nInvalid selection. Please enter a number 1-4.")
 

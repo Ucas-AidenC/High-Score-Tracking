@@ -1,5 +1,7 @@
 import csv
 
+# Code by Aiden
+
 # Dictionary for storing high scores (key: username, value: highest score)
 scores_dict = {}
 

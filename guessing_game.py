@@ -1,6 +1,8 @@
 import random
 import time
 
+# Code originally by Aaron, rewritten by Mark
+
 def time_delay():
     print("loading.")
     time.sleep(0.3)

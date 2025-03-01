@@ -1,7 +1,7 @@
 import random
 import math
 
-
+# Code written by Darius
 
 # Information for team: 
 # The code may seem large but that's purely because most of it is dialogue, as you can see by how most of the code is orange on the right side.
@@ -14,7 +14,7 @@ debug_attacks = True
 print_all_dialogue = False
 
 game_title_screen = '''
--~-~-~-~-~-~Quest for the Country!-~-~-~-~-~-~
+-~-~-~-~-~-~Quest for the Country! (Version 1.5)-~-~-~-~-~-~
            Enter Anything to Start
                       '''
 
@@ -70,7 +70,7 @@ location_dialogue = [
     ['Out of boredom, you read through a page of the constitution you have and on it you notice that it mentions how the government should treat North Dakota.', 'Wait...', 
     'North Dakota?!', "There's no way...", 
     'Apparently the mythical state of North Dakota is not as mythical as commonly thought.', "Maybe the state is real but the sky cities and robot dogs and magic isn't real",
-    "Well, there's no harm in checking for pages there.", "So, before you know it, you're dining with the king of North Dakota in a city 1000 meters up, levitated with magic.",
+    "Well, there's no harm in checking for pages there.", "So, before you know it, you're dining with the king of North Dakota and his robot dog in a city 1000 meters up, levitated with magic.",
     'This is... odd, to say the least.', 'Anyways, you show the king your page and he explains he has not seen anything like it so after you finish eating you decide to go on your way',
     'He hands you a slab of "Northdakotium" and wishes you safe travels.', 
     "He forgot to explain to you what it does, assuming that you already know, so you don't really know what to do with it", "It's a nice gift so you're still happy."],
