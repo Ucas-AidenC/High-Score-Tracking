@@ -14,6 +14,7 @@ debug_attacks = False
 print_all_dialogue = False
 
 game_title_screen = '''
+note for mrs.larose:\nif you want to test this code easier, enable debug attacks\nTo do this, go into TextAdventure.py, go to line 13, and change debug_attacks from False to True
 -~-~-~-~-~-~Quest for the Country! (Version 1.5)-~-~-~-~-~-~
            Enter Anything to Start
                       '''
